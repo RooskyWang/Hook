@@ -59,6 +59,12 @@ public class MapE_InputMgr : MonoBehaviour
 			gridsMgr.SetSelectGridsType(EGridType.Obstacle);
 		}
 
+		//设置怪物出生点
+		if (Input.GetKeyDown(KeyCode.B))
+		{
+			gridsMgr.SetBirthPoint();
+		}
+
 		//空格保存信息
 		if (Input.GetKeyDown(KeyCode.Space))
 		{

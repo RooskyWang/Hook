@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct BirthInfo
+{
+	public int x;
+	public int y;
+}
+
 public struct GridInfo
 {
 	public GridInfo(float height, EGridType gridType)
@@ -32,31 +38,40 @@ public enum EGridType
 	Select = 2,
 }
 
-public class GridInfoMgr : Sington<GridInfoMgr>
+public class MapInfo
 {
+	/// <summary>
+	/// 格子信息
+	/// </summary>
+	public GridInfo[,] heightMap;
 
 	/// <summary>
-	/// 高度图信息
+	/// 出生点
 	/// </summary>
-	private GridInfo[,] heightMap;
+	public List<BirthInfo> birthInfoList;
+}
+
+public class MapInfoMgr : Sington<MapInfoMgr>
+{
+	private MapInfo mapInfo;
 
 	public bool CheckIsBlock(float line, float rank)
 	{
-		if (line < 0 || rank < 0 || line >= heightMap.GetLength(0) || rank >= heightMap.GetLength(1))
+		if (line < 0 || rank < 0 || line >= mapInfo.heightMap.GetLength(0) || rank >= mapInfo.heightMap.GetLength(1))
 		{
 			return true;
 		}
-		return heightMap[(int)line, (int)rank].gridType == EGridType.Obstacle;
+		return mapInfo.heightMap[(int)line, (int)rank].gridType == EGridType.Obstacle;
 	}
 
 	public void LoadHeightMap()
 	{
-		heightMap = XMLFile_MapInfo.LoadXMLFileToMapInfo();
+		mapInfo = XMLFile_MapInfo.LoadXMLFileToMapInfo();
 	}
 
 	public void SaveHeightMap()
 	{
-		XMLFile_MapInfo.SaveMapInfoToXMLFile(heightMap);
+		XMLFile_MapInfo.SaveMapInfoToXMLFile(mapInfo);
 	}
 
 }

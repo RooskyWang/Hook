@@ -12,8 +12,8 @@ public class ProgramMain : MonoBehaviour
 		GlobalRefMgr.Instance.Init(mainCamera);
 
 		//初始化地图信息
-		GridInfoMgr.Instance.LoadHeightMap();
-		UnityAStar.Instance.InitAStar(GridInfoMgr.Instance.CheckIsBlock);
+		MapInfoMgr.Instance.LoadHeightMap();
+		UnityAStar.Instance.InitAStar(MapInfoMgr.Instance.CheckIsBlock);
 		WallMgr.Instance.Init();
 
 		//加载玩家

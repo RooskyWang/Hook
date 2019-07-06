@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -25,12 +24,9 @@ public class MapE_DrawGrids : MonoBehaviour
 	/// </summary>
 	private float offsetY = 0.1f;
 
-	/// <summary>
-	/// 高度图信息
-	/// </summary>
-	private GridInfo[,] heightMap;
-
 	#endregion
+
+	private MapInfo mapInfo;
 
 	/// <summary>
 	/// 选中格子大小
@@ -66,18 +62,21 @@ public class MapE_DrawGrids : MonoBehaviour
 	private void Start()
 	{
 		lineMat = CreateLineMaterial();
-#if MAP_GRID
-		CreateHeightMap();
-#else
-		LoadHeightMap();
-#endif
-		//focusTrm = CameraFollowTarget.instance.targetObj.transform;
 		focusTrm = transform;
+
+		if (XMLFile_MapInfo.HasSceneMapInfo())
+		{
+			LoadHeightMap();
+		}
+		else
+		{
+			CreateHeightMap();
+		}
 	}
 
 	public void SaveData()
 	{
-		XMLFile_MapInfo.SaveMapInfoToXMLFile(heightMap);
+		XMLFile_MapInfo.SaveMapInfoToXMLFile(mapInfo);
 	}
 
 	public void SetSelectGridsType(EGridType type)
@@ -86,23 +85,30 @@ public class MapE_DrawGrids : MonoBehaviour
 		{
 			for (int j = 1 - selectGridSize; j < selectGridSize; j++)
 			{
-				heightMap[curSelectPosX + i, curSelectPosY + j].gridType = type;
+				mapInfo.heightMap[curSelectPosX + i, curSelectPosY + j].gridType = type;
 			}
+		}
+	}
+
+	public void SetBirthPoint()
+	{
+		BirthInfo info = new BirthInfo();
+		info.x = curSelectPosX;
+		info.y = curSelectPosY;
+
+		if (mapInfo.birthInfoList.Contains(info))
+		{
+			mapInfo.birthInfoList.Remove(info);
+		}
+		else
+		{
+			mapInfo.birthInfoList.Add(info);
 		}
 	}
 
 	public bool BCurSelIsBlock()
 	{
-		return heightMap[curSelectPosX, curSelectPosY].gridType == EGridType.Obstacle;
-	}
-
-	public bool CheckIsBlock(float line, float rank)
-	{
-		if (line < 0 || rank < 0 || line >= lineCount || rank >= rankCount)
-		{
-			return true;
-		}
-		return heightMap[(int)line, (int)rank].gridType == EGridType.Obstacle;
+		return mapInfo.heightMap[curSelectPosX, curSelectPosY].gridType == EGridType.Obstacle;
 	}
 
 	#region 绘制格子
@@ -111,6 +117,7 @@ public class MapE_DrawGrids : MonoBehaviour
 	{
 		DrawRedGrids();
 		DrawWhiteGrids();
+		DrawBirthPoint();
 		DrawSelectGrid();
 	}
 
@@ -134,7 +141,7 @@ public class MapE_DrawGrids : MonoBehaviour
 			{
 				if (i > tarX - visibleSize && i < tarX + visibleSize && j > tarY - visibleSize && j < tarY + visibleSize)
 				{
-					if (heightMap[i, j].gridType != EGridType.Obstacle)
+					if (mapInfo.heightMap[i, j].gridType != EGridType.Obstacle)
 					{
 						continue;
 					}
@@ -165,7 +172,7 @@ public class MapE_DrawGrids : MonoBehaviour
 			{
 				if (i > tarX - visibleSize && i < tarX + visibleSize && j > tarY - visibleSize && j < tarY + visibleSize)
 				{
-					if (heightMap[i, j].gridType != EGridType.Feasible)
+					if (mapInfo.heightMap[i, j].gridType != EGridType.Feasible)
 					{
 						continue;
 					}
@@ -198,6 +205,28 @@ public class MapE_DrawGrids : MonoBehaviour
 		GL.End();
 	}
 
+	private void DrawBirthPoint()
+	{
+		lineMat.SetPass(0);
+
+		GL.Begin(GL.LINES);
+
+		GL.Color(Color.yellow);
+
+		int tarX = (int)focusTrm.position.x;
+		int tarY = (int)focusTrm.position.z;
+
+		for (int i = 0; i < mapInfo.birthInfoList.Count; i++)
+		{
+			BirthInfo info = mapInfo.birthInfoList[i];
+			if (info.x > tarX - visibleSize && info.x < tarX + visibleSize && info.y > tarY - visibleSize && info.y < tarY + visibleSize)
+			{
+				DrawOneGrid(info.x, info.y);
+			}
+		}
+		GL.End();
+	}
+
 	/// <summary>
 	/// 绘制一个格子
 	/// </summary>
@@ -227,7 +256,8 @@ public class MapE_DrawGrids : MonoBehaviour
 	/// </summary>
 	private void CreateHeightMap()
 	{
-		heightMap = new GridInfo[lineCount, rankCount];
+		mapInfo.heightMap = new GridInfo[lineCount, rankCount];
+		mapInfo.birthInfoList = new List<BirthInfo>();
 
 		Vector3 origin = Vector3.zero;
 		Ray ray = new Ray(origin, Vector3.down);
@@ -249,8 +279,8 @@ public class MapE_DrawGrids : MonoBehaviour
 				{
 					heightValue = 0;
 				}
-				heightMap[i, j].height = heightValue;
-				heightMap[i, j].gridType = EGridType.Obstacle;
+				mapInfo.heightMap[i, j].height = heightValue;
+				mapInfo.heightMap[i, j].gridType = EGridType.Obstacle;
 			}
 		}
 
@@ -258,7 +288,7 @@ public class MapE_DrawGrids : MonoBehaviour
 
 	private void LoadHeightMap()
 	{
-		heightMap = XMLFile_MapInfo.LoadXMLFileToMapInfo();
+		mapInfo = XMLFile_MapInfo.LoadXMLFileToMapInfo();
 	}
 
 	/// <summary>
@@ -270,7 +300,7 @@ public class MapE_DrawGrids : MonoBehaviour
 		{
 			return 0;
 		}
-		return heightMap[line, rank].height;
+		return mapInfo.heightMap[line, rank].height;
 	}
 
 	/// <summary>

@@ -3201,9 +3201,8 @@
     <Point X="63" Y="47" gridType="Obstacle" height="0" />
     <Point X="63" Y="48" gridType="Obstacle" height="0" />
     <Point X="63" Y="49" gridType="Obstacle" height="0" />
+    <Point X="11" Y="12" />
   </MapInfo>
   <BirthSize Count="1" />
-  <BirthInfo>
-    <Point X="14" Y="13" />
-  </BirthInfo>
+  <BirthInfo />
 </Root>
