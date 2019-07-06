@@ -1,0 +1,14 @@
+﻿################################################################################
+# 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
+################################################################################
+
+/Library
+/Temp
+/Packages
+/obj/Debug
+/Logs
+/.vs/Hook/v16/Server/sqlite3
+/Hook.sln
+/Assembly-CSharp.csproj
+/Assembly-CSharp-firstpass.csproj
+/Assembly-CSharp-Editor.csproj
