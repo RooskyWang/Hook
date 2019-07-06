@@ -38,4 +38,9 @@ public class FormationEditorInspector : Editor
 			formation.DestoryShowUnit();
 		}
 	}
+
+	private void OnDisable()
+	{
+		formation = null;
+	}
 }

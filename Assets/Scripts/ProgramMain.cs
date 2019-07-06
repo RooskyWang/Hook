@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class ProgramMain : MonoBehaviour
 {
-	public Player player;
+	public Camera mainCamera;
 
 	void Awake()
 	{
 		//初始化全局引用
-		GlobalRefMgr.Instance.Init();
+		GlobalRefMgr.Instance.Init(mainCamera);
 
 		//初始化地图信息
 		GridInfoMgr.Instance.LoadHeightMap();
@@ -17,8 +17,8 @@ public class ProgramMain : MonoBehaviour
 		WallMgr.Instance.Init();
 
 		//加载玩家
-		GameObject obj = GlobalRefMgr.Instance.AssetsLoader.SyncLoad_Object<GameObject>("");
-		Player player = new Player();
+		PlayerMgr.Instance.CreateMainPlayer();
+		mainCamera.GetComponent<CameraFollowTarget>().Init(PlayerMgr.Instance.MainPlayer.selfObj);
 
 		//创建一批敌人
 		EnemiesMgr.Instance.CreateEnemies();
@@ -26,23 +26,7 @@ public class ProgramMain : MonoBehaviour
 
 	void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Space))
-		{
-			player.FireHook(GetFireDir());
-		}
-	}
-
-	private Vector3 GetFireDir()
-	{
-		Vector3 pos;
-		Vector3 panelPos = player.Position;
-		Vector3 linePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 2));
-		Vector3 lineDir = Vector3.Normalize(linePos - Camera.main.transform.position);
-
-		if (MathHelper.GetLineAndPanelCrossPos(panelPos, player.selfTran.up, linePos, lineDir, out pos))
-		{
-			return Vector3.Normalize(pos - player.selfTran.position);
-		}
-		return Vector3.zero;
+		PlayerMgr.Instance.Update();
+		EnemiesMgr.Instance.Update();
 	}
 }

@@ -14,7 +14,7 @@ public class EnemiesMgr : Sington<EnemiesMgr>
 
 	public void CreateEnemies()
 	{
-		enemyPrefab = GlobalRefMgr.Instance.AssetsLoader.SyncLoad_Object<GameObject>("Prefab/Enemy");
+		enemyPrefab = GlobalRefMgr.Instance.AssetsLoader.SyncLoad_Object<GameObject>("Prefab/Enemy/Enemy");
 		// 创建一批敌人
 		enemies = new List<Enemy>(10);
 		for (int i = 0; i < 10; i++)
@@ -25,6 +25,11 @@ public class EnemiesMgr : Sington<EnemiesMgr>
 			em.Init(newObj);
 			enemies.Add(em);
 		}
+	}
+
+	public void Update()
+	{
+
 	}
 
 	public void KillEnemy(Enemy obj)

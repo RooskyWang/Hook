@@ -17,12 +17,13 @@ public class FSMState_Move : ABaseFSMState
 
 	public override void OnEnterState(object data)
 	{
+		EventMessage.Instance.RegisterEvent<EventCls_Move>(OnEvent_Move);
 		selfEntity.MoveByPath((List<Vector3>)data, MoveEndCallBack);
 	}
 
 	public override void OnExitState()
 	{
-
+		EventMessage.Instance.UnRegisterEventCallBack<EventCls_Move>(OnEvent_Move);
 	}
 
 	public override void OnUpdateState()
@@ -33,5 +34,13 @@ public class FSMState_Move : ABaseFSMState
 	public void MoveEndCallBack()
 	{
 		fsmMachine.SwitchState(EFSMState.Idle, null);
+	}
+
+	private void OnEvent_Move(EventCls_Move obj)
+	{
+		if (obj.recvObj != this.selfEntity.selfObj)
+			return;
+
+		selfEntity.MoveByPath(obj.path, MoveEndCallBack);
 	}
 }

@@ -4,8 +4,6 @@ using System.Collections;
 public class CameraFollowTarget : MonoBehaviour
 {
 
-    public static CameraFollowTarget instance = null;
-
     private Vector3 direction;
 
     #region 目标信息
@@ -35,11 +33,13 @@ public class CameraFollowTarget : MonoBehaviour
 		this.targetObj = targetObj;
 		direction = -transform.forward;
         targetPos = targetObj.transform.position + direction * distance;
-        instance = this;
     }
 
     void Update()
     {
+		if (targetObj == null)
+			return;
+
         if (Input.GetKey(KeyCode.Q))
         {
             transform.RotateAround(targetObj.transform.position, Vector3.up, -rotateSpeed * Time.deltaTime);
@@ -54,7 +54,10 @@ public class CameraFollowTarget : MonoBehaviour
     }
     private void LateUpdate()
     {
-        if (Vector3.Distance(this.transform.position, targetPos) > 0.05f)
+		if (targetObj == null)
+			return;
+
+		if (Vector3.Distance(this.transform.position, targetPos) > 0.05f)
         {
             this.transform.position = Vector3.Lerp(this.transform.position, targetPos, moveSpeed * Time.deltaTime);
         }

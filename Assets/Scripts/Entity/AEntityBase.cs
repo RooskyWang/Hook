@@ -9,11 +9,6 @@ public abstract class AEntityBase
 	public GameObject selfObj;
 	public Transform selfTran;
 
-	public AEntityBase()
-	{
-		moveCtrl = new AStarMoveCtroller();
-	}
-
 	public virtual void Init(GameObject obj)
 	{
 		if (obj == null)
@@ -21,6 +16,9 @@ public abstract class AEntityBase
 
 		selfObj = obj;
 		selfTran = obj.transform;
+
+		moveCtrl = new AStarMoveCtroller();
+		moveCtrl.Init(selfTran);
 	}
 
 	public void Update()

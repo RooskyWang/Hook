@@ -18,7 +18,7 @@ public class FSMState_Enemy_Idle : ABaseFSMState
 	public override void OnEnterState(object data)
 	{
 		//进入状态，立马寻找玩家
-		List<Vector3> path = UnityAStar.Instance.FindPath(this.selfEntity.Position, Player.instance.Position, true);
+		List<Vector3> path = UnityAStar.Instance.FindPath(this.selfEntity.Position, PlayerMgr.Instance.MainPlayer.Position, true);
 		if (path != null)
 		{
 			fsmMachine.SwitchState(EFSMState.Move, path);

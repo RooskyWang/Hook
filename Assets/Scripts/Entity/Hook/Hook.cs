@@ -10,7 +10,7 @@ public class Hook
 	private float srcZ;
 	private Vector3 startPos;
 	private float hookLength;
-	private float speed = 10;
+	private float speed = 20;
 	private HookGroup hookGroup;
 
 	public void Init(GameObject rootObj, HookGroup hookGroup)

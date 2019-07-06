@@ -33,26 +33,31 @@ public class InputManager : MonoBehaviour
         GUILayout.Label("当前选择的位置:" + curSelectPosX + ":" + curSelectPosY);
     }
 
-    void Update()
-    {
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (!Physics.Raycast(ray, out hit, 500))
-        {
-            return;
-        }
-        curSelectPosX = (int)hit.point.x;
-        curSelectPosY = (int)hit.point.z;
+	void Update()
+	{
+		RaycastHit hit;
+		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		if (!Physics.Raycast(ray, out hit, 500))
+		{
+			return;
+		}
+		curSelectPosX = (int)hit.point.x;
+		curSelectPosY = (int)hit.point.z;
 
-        if (Input.GetMouseButtonDown(0))
-        {
-			List<Vector3> path = UnityAStar.Instance.FindPath(Player.instance.Position, new Vector3(curSelectPosX, 0, curSelectPosY), true);
+		if (Input.GetMouseButtonDown(0))
+		{
+			List<Vector3> path = UnityAStar.Instance.FindPath(PlayerMgr.Instance.MainPlayer.Position, new Vector3(curSelectPosX, 0, curSelectPosY), true);
 
 			if (path != null)
 			{
-				Player.instance.Move(path);
+				PlayerMgr.Instance.MainPlayer.Move(path);
 			}
-        }
-    }
+		}
+
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			PlayerMgr.Instance.MainPlayer.FireHook();
+		}
+	}
 
 }
