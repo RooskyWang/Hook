@@ -37,10 +37,14 @@ public class BuildingMgr : Sington<BuildingMgr>
 		b.buildType = buildType;
 		b.buildPos = buildObj.transform.position;
 
-		allBuilds.Add(b);
+		if (CheckPosCanBuild(b))
+		{
+			//可以建造
+			allBuilds.Add(b);
 
-		isBuildingMode = false;
-		EventMessage.Instance.DispatchEvent<EventCls_BuildClick>(new EventCls_BuildClick());
+			isBuildingMode = false;
+			EventMessage.Instance.DispatchEvent<EventCls_BuildClick>(new EventCls_BuildClick());
+		}
 	}
 
 	public bool CheckIsBuildContainsPos(int x, int y)
@@ -58,5 +62,18 @@ public class BuildingMgr : Sington<BuildingMgr>
 			}
 		}
 		return false;
+	}
+
+	public bool CheckPosCanBuild(Build build)
+	{
+		int bX = (int)build.buildPos.x;
+		int bY = (int)build.buildPos.z;
+		bool bObs = false;
+		bObs = bObs || MapInfoMgr.Instance.CheckIsBlock(bX, bY);
+		bObs = bObs || MapInfoMgr.Instance.CheckIsBlock(bX - 1, bY);
+		bObs = bObs || MapInfoMgr.Instance.CheckIsBlock(bX - 1, bY - 1);
+		bObs = bObs || MapInfoMgr.Instance.CheckIsBlock(bX, bY - 1);
+
+		return !bObs;
 	}
 }
