@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class AEntityBase
@@ -19,9 +18,13 @@ public abstract class AEntityBase
 
 		moveCtrl = new AStarMoveCtroller();
 		moveCtrl.Init(selfTran);
+
+		fsmMachine = GetFSM();
 	}
 
-	public void Update()
+	public abstract AFSMMachine GetFSM();
+
+	public virtual void Update()
 	{
 		if (moveCtrl != null)
 			moveCtrl.Update();
@@ -34,6 +37,11 @@ public abstract class AEntityBase
 	{
 		if (moveCtrl != null)
 			moveCtrl.SetPath(path, endCallBack);
+	}
+
+	public virtual void Destory()
+	{
+		Object.DestroyImmediate(selfObj);
 	}
 
 	public Vector3 Position

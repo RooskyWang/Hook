@@ -8,20 +8,18 @@ public class Player : AEntityBase
 	{
 		base.Init(gameObject);
 
-		fsmMachine = new FSMMachine_Player(this);
-
 		//初始化状态机
 		fsmMachine.SwitchState(EFSMState.Idle, null);
 	}
 
 	public void FireHook()
 	{
-		EventMessage.Instance.DispatchEvent(new EventCls_FireHook() { recvObj = this.selfObj, dir = GetFireDir() });
+		EventMessage.Instance.DispatchEvent(new EventCls_Player_Attack() { recvObj = this.selfObj, dir = GetFireDir() });
 	}
 
 	public void Move(List<Vector3> path)
 	{
-		EventMessage.Instance.DispatchEvent(new EventCls_Move() { recvObj = this.selfObj, path = path });
+		EventMessage.Instance.DispatchEvent(new EventCls_Player_Move() { recvObj = this.selfObj, path = path });
 	}
 
 	private Vector3 GetFireDir()
@@ -36,5 +34,10 @@ public class Player : AEntityBase
 			return Vector3.Normalize(pos - selfTran.position);
 		}
 		return Vector3.zero;
+	}
+
+	public override AFSMMachine GetFSM()
+	{
+		return new FSMMachine_Player(this);
 	}
 }

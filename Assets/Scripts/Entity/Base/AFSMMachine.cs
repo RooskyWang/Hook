@@ -19,7 +19,7 @@ public abstract class AFSMMachine
 
 	public abstract List<ABaseFSMState> GetAllState();
 
-	public void SwitchState(EFSMState state, object data)
+	public void SwitchState(EFSMState state, object data = null)
 	{
 		if (stateDic == null || !stateDic.ContainsKey(state) || stateDic[state] == null)
 			return;

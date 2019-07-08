@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FSMState_Enemy_Attack : ABaseFSMState
+public class FSMState_Enemy_BCatch : ABaseFSMState
 {
-	public FSMState_Enemy_Attack(AFSMMachine fsmMachine, AEntityBase selfEntity)
-	: base(fsmMachine, selfEntity)
+	public FSMState_Enemy_BCatch(AFSMMachine fsmMachine, AEntityBase selfEntity)
+		: base(fsmMachine, selfEntity)
 	{
 
 	}
 
 	public override EFSMState GetStateType()
 	{
-		return EFSMState.Attack;
+		return EFSMState.BCatched;
 	}
 
 	public override void OnEnterState(object data)

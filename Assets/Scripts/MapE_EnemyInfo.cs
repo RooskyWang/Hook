@@ -14,4 +14,6 @@ public class MapE_EnemyInfo : MonoBehaviour
 {
 	public EEnemyType enemyType;
 
+	public bool bMainEnemy;
+
 }

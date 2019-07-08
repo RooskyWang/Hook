@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 
-public class FSMState_FireHook : ABaseFSMState
+public class FSMState_Player_Attack : ABaseFSMState
 {
 	private HookGroup hg;
 
-	public FSMState_FireHook(AFSMMachine fsmMachine, AEntityBase selfEntity)
+	public FSMState_Player_Attack(AFSMMachine fsmMachine, AEntityBase selfEntity)
 		: base(fsmMachine, selfEntity)
 	{
 		GameObject hookObj = GlobalRefMgr.Instance.AssetsLoader.SyncLoad_Object<GameObject>("Prefab/Hook");

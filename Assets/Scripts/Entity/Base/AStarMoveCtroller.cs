@@ -17,21 +17,21 @@ public class AStarMoveCtroller
 
 	public void Update()
     {
-        if (findPath != null)
-        {
-            Vector3 stPos = Vector3.zero;
-            Vector3 tarPos = Vector3.zero;
+		//if (findPath != null)
+		//{
+		//	Vector3 stPos = Vector3.zero;
+		//	Vector3 tarPos = Vector3.zero;
 
-            for (int i = 0; i < findPath.Count; i++)
-            {
-                if (i + 1 < findPath.Count)
-                {
-                    stPos = findPath[i];
-                    tarPos = findPath[i + 1];
-                }
-				Debug.DrawLine(stPos, tarPos, Color.blue);
-            }
-        }
+		//	for (int i = 0; i < findPath.Count; i++)
+		//	{
+		//		if (i + 1 < findPath.Count)
+		//		{
+		//			stPos = findPath[i];
+		//			tarPos = findPath[i + 1];
+		//		}
+		//		Debug.DrawLine(stPos, tarPos, Color.blue);
+		//	}
+		//}
 
         //有路径
         if (movePath != null && movePath.Count > 0)

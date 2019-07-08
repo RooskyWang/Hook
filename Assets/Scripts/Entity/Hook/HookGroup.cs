@@ -28,11 +28,9 @@ public class HookGroup
 	public void Update()
 	{
 		Hook firstHook = null;
-		Vector3 prePos = Vector3.zero;
 		if (hookList.Count > 0)
 		{
 			firstHook = hookList.Peek();
-			prePos = firstHook.GetHookHeadPos();
 		}
 
 		switch (state)
@@ -44,12 +42,28 @@ public class HookGroup
 					// 如果在发射过程中，就延长
 					firstHook.IncLength();
 					Vector3 firstHookHeadPos = firstHook.GetHookHeadPos();
+					CrossWallInfo cwi = null;
 
 					catchEnemy = CatchEnemy(firstHookHeadPos);
 					if (catchEnemy != null)
 					{
 						// 抓到敌人了
 						state = EState.Back;
+					}
+					else if ((cwi = WallMgr.Instance.GetCrossWall(firstHook.GetHookStartPos(), firstHookHeadPos, firstHook.GetHookDir().normalized)) != null)
+					{
+						// 检测是否撞到墙
+						Vector3 curDir = firstHook.GetHookDir();
+						Vector3 reflectDir = MathHelper.GetReflectDir(curDir, cwi.crossObj.transform.forward);
+						if (hookList.Count < MAX_HOOK_COUNT)
+						{
+							// 撞墙了，反射
+							JoinHook(cwi.crossPos, reflectDir);
+						}
+						else
+						{
+							state = EState.Back;
+						}
 					}
 					else if (firstHook.BMaxLength())
 					{
@@ -61,25 +75,6 @@ public class HookGroup
 						else
 						{
 							state = EState.Back;
-						}
-					}
-					else
-					{
-						// 检测是否撞到墙
-						CrossWallInfo cwi = WallMgr.Instance.GetCrossWall(prePos, firstHook.GetHookStartPos(), firstHookHeadPos, firstHook.GetHookDir().normalized);
-						if (cwi != null)
-						{
-							Vector3 curDir = firstHook.GetHookDir();
-							Vector3 reflectDir = MathHelper.GetReflectDir(curDir, cwi.crossObj.transform.forward);
-							if (hookList.Count < MAX_HOOK_COUNT)
-							{
-								// 撞墙了，反射
-								JoinHook(cwi.crossPos, reflectDir);
-							}
-							else
-							{
-								state = EState.Back;
-							}
 						}
 					}
 					break;

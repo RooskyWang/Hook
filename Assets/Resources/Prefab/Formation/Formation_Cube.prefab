@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 1
+  bMainEnemy: 1
 --- !u!1 &2698925083486132599
 GameObject:
   m_ObjectHideFlags: 0
@@ -88,6 +89,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 1
+  bMainEnemy: 0
 --- !u!1 &3697282921998991552
 GameObject:
   m_ObjectHideFlags: 0
@@ -132,6 +134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 1
+  bMainEnemy: 0
 --- !u!1 &4127501407895766185
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,6 +179,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 1
+  bMainEnemy: 0
 --- !u!1 &5508182679317202728
 GameObject:
   m_ObjectHideFlags: 0
@@ -220,6 +224,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 1
+  bMainEnemy: 0
 --- !u!1 &8115414263825188577
 GameObject:
   m_ObjectHideFlags: 0

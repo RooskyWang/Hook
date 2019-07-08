@@ -11,6 +11,9 @@ public class ProgramMain : MonoBehaviour
 		//初始化全局引用
 		GlobalRefMgr.Instance.Init(mainCamera);
 
+		//加载数据
+		DataLoaderMgr.Instance.LoadAllData();
+
 		//初始化地图信息
 		MapInfoMgr.Instance.LoadHeightMap();
 		UnityAStar.Instance.InitAStar(MapInfoMgr.Instance.CheckIsBlock);
@@ -26,7 +29,8 @@ public class ProgramMain : MonoBehaviour
 		UIMgr.Instance.OpenUI(UIType.GameMain);
 
 		//加载基地
-		GameObject basePrefab = GlobalRefMgr.Instance.AssetsLoader.SyncLoad_Object<GameObject>("Prefab/Build/Build_BaseTower");
+		string resPath = DataLoaderMgr.Instance.resInfo.GetResNameById(DataLoaderMgr.Instance.buildInfo.GetBuildInfoById(1).ResId);
+		GameObject basePrefab = GlobalRefMgr.Instance.AssetsLoader.SyncLoad_Object<GameObject>(resPath);
 		GameObject baseObj = Instantiate(basePrefab);
 		baseObj.transform.position = new Vector3(2, 0, 2);
 		BuildingMgr.Instance.AddBaseBuild(baseObj);

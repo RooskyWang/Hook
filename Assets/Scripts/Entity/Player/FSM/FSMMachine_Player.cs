@@ -15,9 +15,9 @@ public class FSMMachine_Player : AFSMMachine
 	{
 		return new List<ABaseFSMState>()
 		{
-			new FSMState_Idle(this, player),
-			new FSMState_FireHook(this, player),
-			new FSMState_Move(this, player),
+			new FSMState_Player_Idle(this, player),
+			new FSMState_Player_Attack(this, player),
+			new FSMState_Player_Move(this, player),
 		};
 	}
 }

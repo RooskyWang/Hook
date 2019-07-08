@@ -65,11 +65,6 @@ public class InputManager : MonoBehaviour
 		{
 			PlayerMgr.Instance.MainPlayer.FireHook();
 		}
-
-		if (Input.GetKeyDown(KeyCode.Z))
-		{
-			EnemiesMgr.Instance.CreateFormation(new Vector3(14.5f, 0, 13.5f), 0);
-		}
 	}
 
 }

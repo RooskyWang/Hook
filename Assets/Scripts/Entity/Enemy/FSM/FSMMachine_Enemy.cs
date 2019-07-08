@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
 public class FSMMachine_Enemy : AFSMMachine
 {
@@ -18,6 +16,8 @@ public class FSMMachine_Enemy : AFSMMachine
 			new FSMState_Enemy_Idle(this, selfEntity),
 			new FSMState_Enemy_Move(this, selfEntity),
 			new FSMState_Enemy_Attack(this, selfEntity),
+			new FSMState_Enemy_FormationMove(this, selfEntity),
+			new FSMState_Enemy_BCatch(this, selfEntity),
 		};
 	}
 }

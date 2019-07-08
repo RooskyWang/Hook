@@ -2,31 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy
+public class Enemy : AEntityBase
 {
-	private GameObject rootObj;
-	private AStarMoveCtroller moveCtrl;
+	public FormationMgr forMgr;
 
-	public GameObject RootObj { get { return rootObj; } }
+	public bool bMainEnemy;
 
-	public void Init(GameObject rootObj)
+	public override void Init(GameObject obj)
 	{
-		this.rootObj = rootObj;
+		base.Init(obj);
 	}
 
-	public void Update()
+	public override void Destory()
 	{
-
+		base.Destory();
 	}
 
-	public void Destory()
+	public override AFSMMachine GetFSM()
 	{
-		Object.DestroyImmediate(rootObj);
+		return new FSMMachine_Enemy(this);
 	}
 
-	public Vector3 Position
+	public void MoveDistance(Vector3 dir)
 	{
-		get { return rootObj.transform.position; }
-		set { rootObj.transform.position = value; }
+		fsmMachine.SwitchState(EFSMState.FormationMove, Position + dir);
 	}
 }

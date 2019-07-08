@@ -35,6 +35,6 @@ public class UI_GameMain : AUIBase
 
 	private void OnClick_Next()
 	{
-
+		EnemyWaveMgr.Instance.NextWave();
 	}
 }

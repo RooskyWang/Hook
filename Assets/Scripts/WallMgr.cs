@@ -24,28 +24,42 @@ public class WallMgr : Sington<WallMgr>
 		}
 	}
 
-	public CrossWallInfo GetCrossWall(Vector3 prePos, Vector3 startPos, Vector3 linePos, Vector3 lineDir)
+	public CrossWallInfo GetCrossWall(Vector3 startPos, Vector3 linePos, Vector3 lineDir)
 	{
 		Vector3 crossPos;
-		foreach (var item in allWall)
+		foreach (var wall in allWall)
 		{
-			if (MathHelper.GetLineAndPanelCrossPos(item.transform.position, item.transform.forward, linePos, lineDir, out crossPos))
+			//求出线和面的交叉点
+			if (MathHelper.GetLineAndPanelCrossPos(wall.transform.position, wall.transform.forward, linePos, lineDir, out crossPos))
 			{
-				// 求出线和面的交叉点
-				if (Vector3.Distance(startPos, crossPos) > 0.05f)
+				//检测交叉点是否在平面内
+				Vector3 crossPosLocalPosForWall = wall.transform.InverseTransformPoint(crossPos);
+				if (Mathf.Abs(crossPosLocalPosForWall.x) <= 0.5f && Mathf.Abs(crossPosLocalPosForWall.y) <= 0.5f)
 				{
-					// 排除起点就在墙内，移动时还在墙内的情况
-					Bounds bd = item.GetComponent<BoxCollider>().bounds;
-					if (bd.Contains(crossPos))
+					//将钩子头的点映射到面的坐标空间下
+					Vector3 localPosForWall = wall.transform.InverseTransformPoint(linePos);
+					float worldDisZ = localPosForWall.z * (wall.transform.lossyScale.z / wall.transform.localScale.z);
+
+					//处理穿透墙面的问题
+					//判断当前点到墙面的向量和线的前进方向是否一致，不一致（反向），则为穿透
+					Vector3 startDir = crossPos - startPos;
+					Vector3 curDir = crossPos - linePos;
+					float angle = Vector3.Dot(startDir.normalized, curDir.normalized);
+					bool diffDir = angle <= -0.98f;
+
+					if (wall.transform.name.Equals("Cube"))
 					{
-						if (Vector3.Distance(crossPos, linePos) < 0.05f)
-						{
-							// 判断交叉点和链子的头部是否在墙面内
-							CrossWallInfo cwi = new CrossWallInfo();
-							cwi.crossObj = item;
-							cwi.crossPos = crossPos;
-							return cwi;
-						}
+						Debug.LogError(crossPos);
+						Debug.LogError(angle);
+					}
+
+					if (Mathf.Abs(worldDisZ) < 0.05f || diffDir)
+					{
+						//距离特别近，或者穿透了
+						CrossWallInfo cwi = new CrossWallInfo();
+						cwi.crossObj = wall;
+						cwi.crossPos = crossPos;
+						return cwi;
 					}
 				}
 			}

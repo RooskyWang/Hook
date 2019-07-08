@@ -4,10 +4,16 @@ using UnityEngine;
 
 public enum EFSMState
 {
+	//玩家状态
 	None,
 	Idle,
 	Attack,
 	Move,
+
+	//敌人状态
+	FormationMove,
+	BCatched,
+	Dead,
 }
 
 public abstract class ABaseFSMState
