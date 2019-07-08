@@ -18,15 +18,24 @@ public class ProgramMain : MonoBehaviour
 
 		//加载玩家
 		PlayerMgr.Instance.CreateMainPlayer();
+		PlayerMgr.Instance.MainPlayer.Position = new Vector3(3.5f, 0, 3.5f);
 		mainCamera.GetComponent<CameraFollowTarget>().Init(PlayerMgr.Instance.MainPlayer.selfObj);
 
-		//创建一批敌人
-		EnemiesMgr.Instance.CreateEnemies();
+		//初始化UI
+		UIMgr.Instance.Init();
+		UIMgr.Instance.OpenUI(UIType.GameMain);
+
+		//加载基地
+		GameObject basePrefab = GlobalRefMgr.Instance.AssetsLoader.SyncLoad_Object<GameObject>("Prefab/Build/Build_BaseTower");
+		GameObject baseObj = Instantiate(basePrefab);
+		baseObj.transform.position = new Vector3(2, 0, 2);
+		BuildingMgr.Instance.AddBaseBuild(baseObj);
 	}
 
 	void Update()
 	{
 		PlayerMgr.Instance.Update();
 		EnemiesMgr.Instance.Update();
+		UIMgr.Instance.Update();
 	}
 }

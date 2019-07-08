@@ -23,6 +23,8 @@ public class UnityAStar : Sington<UnityAStar>
 				path.Add(new Vector3(item.x, 0, item.y));
 			}
 
+			//path.RemoveAt(path.Count - 1);
+			//path.Add(endPos);
 			return path;
 		}
 		return null;

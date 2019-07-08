@@ -61,6 +61,10 @@ public class MapInfoMgr : Sington<MapInfoMgr>
 		{
 			return true;
 		}
+
+		if (BuildingMgr.Instance.CheckIsBuildContainsPos((int)line, (int)rank))
+			return true;
+
 		return mapInfo.heightMap[(int)line, (int)rank].gridType == EGridType.Obstacle;
 	}
 

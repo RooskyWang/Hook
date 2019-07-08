@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 public class InputManager : MonoBehaviour
@@ -46,17 +45,30 @@ public class InputManager : MonoBehaviour
 
 		if (Input.GetMouseButtonDown(0))
 		{
-			List<Vector3> path = UnityAStar.Instance.FindPath(PlayerMgr.Instance.MainPlayer.Position, new Vector3(curSelectPosX, 0, curSelectPosY), true);
-
-			if (path != null)
+			if (BuildingMgr.Instance.isBuildingMode)
 			{
-				PlayerMgr.Instance.MainPlayer.Move(path);
+				BuildingMgr.Instance.AddBuild();
+			}
+			else
+			{
+				//不在建筑模式下，控制玩家
+				List<Vector3> path = UnityAStar.Instance.FindPath(PlayerMgr.Instance.MainPlayer.Position, new Vector3(hit.point.x, 0, hit.point.z), true);
+
+				if (path != null)
+				{
+					PlayerMgr.Instance.MainPlayer.Move(path);
+				}
 			}
 		}
 
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
 			PlayerMgr.Instance.MainPlayer.FireHook();
+		}
+
+		if (Input.GetKeyDown(KeyCode.Z))
+		{
+			EnemiesMgr.Instance.CreateFormation(new Vector3(14.5f, 0, 13.5f), 0);
 		}
 	}
 
