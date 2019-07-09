@@ -47,12 +47,6 @@ public class WallMgr : Sington<WallMgr>
 					float angle = Vector3.Dot(startDir.normalized, curDir.normalized);
 					bool diffDir = angle <= -0.98f;
 
-					if (wall.transform.name.Equals("Cube"))
-					{
-						Debug.LogError(crossPos);
-						Debug.LogError(angle);
-					}
-
 					if (Mathf.Abs(worldDisZ) < 0.05f || diffDir)
 					{
 						//距离特别近，或者穿透了
